@@ -2,22 +2,24 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 
 namespace ECommerce.Products.Controllers
 {
     public class ProductoController : Controller
     {
-        private readonly IConfiguration _configuration;
+        //private readonly IConfiguration _configuration;
 
-        ProductoController(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-        
+        //ProductoController() //IConfiguration configuration
+        //{
+        //    // _configuration = configuration;
+        //}
+
         // GET: ProductoController
         public ActionResult Index()
         {
-            return View();
+            List<Producto> lista = ProductoDAO.Instancia.Listar();
+            return View(lista);
         }
 
         // GET: Producto/Details/5
@@ -29,8 +31,8 @@ namespace ECommerce.Products.Controllers
         // GET: Producto/Create
         public ActionResult Create()
         {
-            var cn = _configuration["ConnectionStrings:DefaultConnection"];
-            ViewBag.Mensaje = cn;
+            //var cn = _configuration["ConnectionStrings:DefaultConnection"];
+            //ViewBag.Mensaje = cn;
             return View();
         }
 
@@ -43,11 +45,18 @@ namespace ECommerce.Products.Controllers
             {
                 if (producto == null)
                     ViewBag.Mensaje = "Producto no puede ser nulo";
-                    //return new BadRequestResult();
+                //return new BadRequestResult();
                 if (string.IsNullOrWhiteSpace(producto.Nombre))
                     ViewBag.Mensaje = "Nombre de Producto no puede ser nulo o vacío";
-                    //return new BadRequestResult();
-                return RedirectToAction(nameof(Create));
+                if (producto.Precio < 0)
+                    ViewBag.Mensaje = "Precio de Producto no puede ser menor a cero";
+                //return new BadRequestResult();
+
+                bool creado = ProductoDAO.Instancia.Insertar(producto);
+                if (creado)
+                    return RedirectToAction(nameof(Index));
+                else
+                    return RedirectToAction(nameof(Create));
             }
             catch
             {

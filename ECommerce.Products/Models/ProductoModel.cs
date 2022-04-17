@@ -6,7 +6,7 @@ namespace ECommerce.Products.Models
     {
         [Display(Name="Código")]
         public int Id { get; set; }
-        [Display(Name="Nombre de producto"), Required, MaxLength="100"]
+        [Display(Name="Nombre de producto"), Required]
         public string Nombre { get; set; }
     }
 }
