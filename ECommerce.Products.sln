@@ -3,7 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce.Products", "ECommerce.Products\ECommerce.Products.csproj", "{1EC79CA9-A3F4-4446-AFAD-B40BFB92D4CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerce.Products", "ECommerce.Products\ECommerce.Products.csproj", "{1EC79CA9-A3F4-4446-AFAD-B40BFB92D4CB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E6730ECA-B421-430D-BCFD-3CA6DFAD0C3C}"
+	ProjectSection(SolutionItems) = preProject
+		SqlQueries.sql = SqlQueries.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
