@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace ECommerce.Products.Controllers
 {
-    public class ProductoController : Controller
+    public class ProductosController : Controller
     {
         //private readonly IConfiguration _configuration;
 
@@ -25,7 +25,8 @@ namespace ECommerce.Products.Controllers
         // GET: Producto/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            Producto modelo = ProductoDAO.Instancia.Devolver(id);
+            return View(modelo);
         }
 
         // GET: Producto/Create
@@ -67,28 +68,38 @@ namespace ECommerce.Products.Controllers
         // GET: ProductoController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            Producto modelo = ProductoDAO.Instancia.Devolver(id);
+            return View(modelo);
         }
 
         // POST: ProductoController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, Producto producto)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                if (string.IsNullOrWhiteSpace(producto.Nombre))
+                    ViewBag.Mensaje = "Nombre de Producto no puede ser nulo o vacío";
+                if (producto.Precio < 0)
+                    ViewBag.Mensaje = "Precio de Producto no puede ser menor a cero";
+                bool editado = ProductoDAO.Instancia.Actualizar(producto);
+                if (editado)
+                    return RedirectToAction(nameof(Index));
+                else
+                    return RedirectToAction(nameof(Edit), new {id = id});
             }
             catch
             {
-                return View();
+                return View(id);
             }
         }
 
         // GET: ProductoController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            Producto modelo = ProductoDAO.Instancia.Devolver(id);
+            return View(modelo);
         }
 
         // POST: ProductoController/Delete/5
@@ -98,11 +109,15 @@ namespace ECommerce.Products.Controllers
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                bool eliminado = ProductoDAO.Instancia.Eliminar(id);
+                if (eliminado)
+                    return RedirectToAction(nameof(Index));
+                else
+                    return RedirectToAction(nameof(Delete), new { id = id });
             }
             catch
             {
-                return View();
+                return View(id);
             }
         }
     }
